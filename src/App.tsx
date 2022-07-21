@@ -1,14 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import ButtonPrimary from './components/ButtonPrimary';
+import AllExpenses from './screens/AllExpenses';
+import ManageExpense from './screens/ManageExpense';
+import RecentExpenses from './screens/RecentExpenses';
 
-export default function App() {
+// import ButtonPrimary from './components/ButtonPrimary';
+
+const Stack = createNativeStackNavigator();
+const BottomTabs = createBottomTabNavigator();
+
+function ExpensesOverview(): JSX.Element {
+  return (
+    <BottomTabs.Navigator>
+      <BottomTabs.Screen name="recentExpenses" component={RecentExpenses} />
+      <BottomTabs.Screen name="allExpenses" component={AllExpenses} />
+    </BottomTabs.Navigator>
+  );
+}
+
+export default function App(): JSX.Element {
   return (
     <View style={styles.container}>
-      <Text>Open up APP.tsx to start working on your app!</Text>
-      <ButtonPrimary />
+      {/* <ButtonPrimary /> */}
       <StatusBar style="auto" />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='expensesOverview'>
+          <Stack.Screen name="manageExpenses" component={ManageExpense} />
+          <Stack.Screen name="expensesOverview" component={ExpensesOverview} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
